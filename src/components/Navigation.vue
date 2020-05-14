@@ -48,7 +48,7 @@
       <v-toolbar-title class="headline">
         <div class="sidebar-brand-text mx-0 text-uppercase">
           Duck
-          <sup>Village</sup>
+          <sup class="grey--text">Village</sup>
         </div>
         <!-- <span>Duck</span>
         <span class="font-weight-light">Village</span>-->

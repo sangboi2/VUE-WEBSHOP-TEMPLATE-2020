@@ -11,12 +11,12 @@
         <div class="text-right">
           <v-btn color="primary mt-1" small to="/addNew">
             <span style="color:#ffffff;">
-              <v-icon small>add</v-icon>
+              <v-icon small>mdi-plus</v-icon>
             </span>
             <span style="padding:0 2px; color:#ffffff;">Add Item</span>
           </v-btn>
         </div>
-        <div class="pa-0 mt-2" id="info">
+        <div class="pa-2 mt-2" id="info">
           <v-simple-table id="menu-table">
             <template v-slot:default>
               <thead class="thead">

@@ -3,7 +3,7 @@
     <v-row>
       <v-col offset-md="0" md="7" class="ml-12">
         <h1 class="pl-3">Products</h1>
-        <div class="pa-0" id="info">
+        <div class="pa-2" id="info">
           <v-simple-table id="menu-table">
             <template v-slot:default>
               <thead class="thead">

@@ -302,6 +302,9 @@ export default {
   color: white;
   text-shadow: 1px 1px 1px #aaa;
 }
+#menu-table {
+  border-radius: 0.3rem;
+}
 #totalRevenue {
   padding: 20px 10px 20px 0;
   display: flex;

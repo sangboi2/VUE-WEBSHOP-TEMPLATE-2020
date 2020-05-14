@@ -16,7 +16,7 @@
           <v-text-field label="Price" aria-required v-model="price" class></v-text-field>
           <v-file-input label="Upload image" @change="uploadImage"></v-file-input>
           <div class="text-right">
-            <v-btn small color="light" class="mb-3">
+            <v-btn small color="light" class="mb-3" to="/admin">
               <span style="color:#000000;">
                 <v-icon small>cancel</v-icon>
               </span>
@@ -30,7 +30,7 @@
               :disabled="btnDisable"
             >
               <span>
-                <v-icon small>add</v-icon>
+                <v-icon small>mdi-plus</v-icon>
               </span>
               <span style="padding:0 2px;">Add item</span>
             </v-btn>
