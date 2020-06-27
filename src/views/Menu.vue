@@ -49,7 +49,7 @@
         <v-col offset-md="0" md="4">
           <h1 class="pl-0 text-left" text-capitalize>
             Your cart
-            <span class="float-right mr-6">({{basket.length}})</span>
+            <span class="float-right mr-6">({{cartCount}})</span>
           </h1>
           <div class="pa-2" id="info">
             <v-simple-table id="product-table" v-if="basket.length > 0" class="responsive-table">
@@ -243,14 +243,16 @@ export default {
       let deliverPrice = 10;
       let totalCost = this.subTotal;
       return totalCost + deliverPrice;
-    }
-    /*   cartItemCount() {
+    },
+    // Counting each item in the basket
+    cartCount() {
       let QTY = 0;
       for (var items in this.basket) {
         let individualItem = this.basket[items];
-        QTY += individualItem.quantity+this.basketItem;
+        QTY += individualItem.quantity;
       }
-    }  */
+      return QTY;
+    }
   }
 };
 </script>
