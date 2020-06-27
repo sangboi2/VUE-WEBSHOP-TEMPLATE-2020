@@ -1,7 +1,6 @@
 <template>
   <v-app id="App">
     <navigation />
-
     <v-content>
       <!--<v-container
         class="fill-height"
@@ -17,9 +16,6 @@
     </v-footer>-->
   </v-app>
 </template>
-<style lang="scss">
-</style>
-
 <script>
 import Navigation from "./components/Navigation";
 export default {
@@ -42,7 +38,7 @@ main {
 }
 
 h1 {
-  @include infobox_mixin(1px, grey, 1px, 5px, white);
+  @include infobox_mixin(0px, grey, 0px, 0px, white);
   font-weight: bold;
   text-transform: uppercase;
   font-size: 16;

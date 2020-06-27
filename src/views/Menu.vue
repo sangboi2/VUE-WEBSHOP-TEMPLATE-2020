@@ -1,97 +1,144 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col offset-md="0" md="7" class="ml-12">
-        <h1 class="pl-3">Products</h1>
-        <div class="pa-2" id="info">
-          <v-simple-table id="menu-table">
-            <template v-slot:default>
-              <thead class="thead">
-                <tr>
-                  <th class="text-left" style="width:100px;">Image</th>
-                  <th class="text-left" style="width:200px;">Product</th>
-                  <th class="text-left" style="width:50px;">Price</th>
-                  <th class="text-left" style="width:20px;">Add to basket</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in menuItems" :key="item.name">
-                  <td id="td_menuitem_img">
-                    <v-img v-bind:src="item.image"></v-img>
-                  </td>
-                  <td>
-                    <span id="td_name">{{item.name}}</span>
-                    <br />
-                    <span id="menu_product_des">{{item.description}}</span>
-                  </td>
-                  <td>{{item.price}}</td>
-                  <td>
-                    <v-icon color="primary" @click="addToBasket(item)">add_box</v-icon>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </div>
-      </v-col>
-      <v-col offset-md="0" md="4">
-        <h1 class="pr-3">Your basket</h1>
-        <div class="pa-0" id="info">
-          <v-simple-table id="product-table" v-if="basket.length > 0">
-            <template v-slot:default>
-              <thead class="thead">
-                <tr>
-                  <th class="text-left" style="width:30;">Quantity</th>
-                  <th class="text-left" style="width:50%;">Name of item</th>
-                  <th class="text-left" style="width:20px;">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in basket" :key="item.name">
-                  <td>
-                    <v-icon color="primary" @click="decreaseQtn(item)">indeterminate_check_box</v-icon>
-                    {{item.quantity}}
-                    <v-icon color="primary" @click="increaseQtn(item)">add_box</v-icon>
-                  </td>
-                  <td>{{item.name}}</td>
-                  <td>{{item.price}}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-          <v-simple-table class="pt-3 pl-4 pr-4 pb-0 font-weight-bold" v-else>
-            <div>
-              <v-alert dense text type="info" dismissible dark>Your basket is empty now. Add item.</v-alert>
-            </div>
-          </v-simple-table>
-          <v-divider></v-divider>
-          <v-row id="basket_checkout" class="mt-4 px-2" style="margin:0;">
-            <v-col>
-              <p>Subtotal:</p>
-              <p>Delivery:</p>
-            </v-col>
-            <v-col class="text-right">
-              <p>{{subTotal}}</p>
-              <p>10 DKK</p>
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-          <v-row class="font-weight-bold px-2" style="margin:0;">
-            <v-col>Total amount</v-col>
-            <v-col class="text-right">
-              <p>{{total}}</p>
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-          <v-row class="font-weight-bold pt-5 pb-5 px-1" style="margin:0;">
-            <v-col class="text-right">
-              <v-btn small class="primary white--text" @click="addCheckoutItem()">Checkout</v-btn>
-            </v-col>
-          </v-row>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="team">
+    <v-container grid-list-xs fluid>
+      <v-layout row wrap>
+        <v-col offset-md="0" md="8" class="ma-0">
+          <h1 class="pl-0">Products</h1>
+          <div class="pa-2" id="info">
+            <v-simple-table id="menu-table">
+              <template v-slot:default>
+                <thead class="thead">
+                  <tr>
+                    <th scope="cols" style="width:150px;">Image</th>
+                    <th scope="cols" style="width:400px;">Product</th>
+                    <th scope="cols" style="width:15%;">Price</th>
+                    <th scope="cols" style="width:50px;">Add to Cart</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in menuItems" :key="item.name">
+                    <td scope="row" id="td_menuitem_img">
+                      <v-img v-bind:src="item.image"></v-img>
+                    </td>
+                    <td>
+                      <span id="td_name">{{item.name}}</span>
+                      <br />
+                      <span id="menu_product_des">{{item.description}}</span>
+                    </td>
+                    <td class="font-weight-bold">
+                      <!-- <span>
+                        <v-icon small flat text class="currency black--text">mdi-currency-usd</v-icon>
+                      </span>-->
+                      {{item.price}}
+                      <span>DKK</span>
+                    </td>
+                    <td>
+                      <v-btn flat small color="primary" class="ma-0" @click="addToBasket(item)">
+                        <span>
+                          <v-icon small color="light" class="mr-1">mdi-cart-arrow-down</v-icon>
+                        </span>
+                        <span>Add to cart</span>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+        <v-col offset-md="0" md="4">
+          <h1 class="pl-0 text-left" text-capitalize>
+            Your cart
+            <span class="float-right mr-6">({{basket.length}})</span>
+          </h1>
+          <div class="pa-2" id="info">
+            <v-simple-table id="product-table" v-if="basket.length > 0" class="responsive-table">
+              <template v-slot:default>
+                <thead class="thead">
+                  <tr>
+                    <th scope="cols" style="width:30%;">Quantity</th>
+                    <th scope="cols" style="width:40%;">Name of item</th>
+                    <th scope="cols" style="width:30%;">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in basket" :key="item.name">
+                    <td scope="row">
+                      <v-icon color="primary" @click="decreaseQtn(item)">mdi-minus-box</v-icon>
+                      {{item.quantity}}
+                      <v-icon color="primary" @click="increaseQtn(item)">mdi-plus-box</v-icon>
+                    </td>
+                    <td>{{item.name}}</td>
+                    <td class="font-weight-bold">
+                      {{item.price}}
+                      <span>DKK</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <v-simple-table class="pt-3 pl-4 pr-4 pb-0 font-weight-bold responsive-table" v-else>
+              <div>
+                <v-alert
+                  dense
+                  text
+                  type="info"
+                  dismissible
+                  dark
+                  close-icon="mdi-close"
+                  icon="mdi-bell-ring-outline"
+                >Your shopping cart is empty.</v-alert>
+              </div>
+            </v-simple-table>
+            <v-divider></v-divider>
+            <v-row id="basket_checkout" class="mt-0 px-2" style="margin:0;">
+              <v-col>
+                <p>
+                  <span class="subTotal">Subtotal:</span>
+                </p>
+                <p>
+                  <span class="delivery">Delivery:</span>
+                </p>
+                <p>
+                  <span class="delivery">Lead Time:</span>
+                </p>
+                <p>
+                  <span class="delivery">Shipping Time:</span>
+                </p>
+              </v-col>
+              <v-col class="text-right">
+                <p class="font-weight-light">
+                  {{subTotal}}
+                  <span>DKK</span>
+                </p>
+                <p class="success--text font-weight-light">
+                  10
+                  <span>DKK</span>
+                </p>
+                <p class="font-weight-light">15 days</p>
+                <p class="font-weight-light">6 - 10 days</p>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row class="totalamount px-2" style="margin:0;">
+              <v-col>Total amount:</v-col>
+              <v-col class="text-right">
+                <p>
+                  <span class="totalamountText">{{total}} DKK</span>
+                </p>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row class="px-1" style="margin:0;">
+              <v-col class="text-right">
+                <v-btn flat small class="primary white--text" @click="addCheckoutItem()">Checkout</v-btn>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
 // Disable after created function is disable using a better way store method like in admin page
@@ -197,12 +244,19 @@ export default {
       let totalCost = this.subTotal;
       return totalCost + deliverPrice;
     }
+    /*   cartItemCount() {
+      let QTY = 0;
+      for (var items in this.basket) {
+        let individualItem = this.basket[items];
+        QTY += individualItem.quantity+this.basketItem;
+      }
+    }  */
   }
 };
 </script>
 <style lang="scss" scoped>
 h1 {
-  @include infobox_mixin(1px, grey, 1px, 5px, white);
+  @include infobox_mixin(0px, grey, 0px, 0px, white);
   font-weight: bold;
   text-transform: uppercase;
   font-size: 16;
@@ -240,8 +294,26 @@ tr td {
 #basket_checkout p:last-child {
   line-height: 4px;
 }
-// The problem solved!
-#menu-table :hover {
-  border-radius: 0.3rem;
+.subTotal,
+.delivery {
+  font-style: Thin;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 13px;
 }
+.totalamount {
+  font-weight: bold;
+}
+.totalamountText {
+  text-decoration-line: underline;
+  text-decoration-style: double;
+}
+
+// The problem solved!
+/* #menu-table :hover {
+  border-radius: 0.3rem;
+} */
+/* .currency {
+  margin-right: -7px;
+} */
 </style>

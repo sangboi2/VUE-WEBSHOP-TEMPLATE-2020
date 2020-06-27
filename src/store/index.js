@@ -17,7 +17,7 @@ import { dbMenuAdd, dbOrders } from "../../firebase";
 // Note: Before, we need to render the page to see the result change.
 // With vuex, it will automatically the page as well as you can see.
 // Now, we don't have to click and render the page anymore to see the result change.
-// Now it' doing hot-reload and re-rendering in vuex.
+// Now it's doing hot-reload and re-rendering in vuex.
 // Vuex is doing the data control like a kind of doing a watch the data as well.
 // We just moving the business logic into the 'STORE'
 // Next challenge is to do at menu page. Now it is on only admin page.
@@ -25,13 +25,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    counter: 0,
     //Vuex data structure connected to computed area in Menu.vue
     /*  { It's just static item for an array
        name: "Bagel Suprem",
        description: "Suger, Chedder & Chilli",
        quantity: 1
      } */
+    // For counter orderNumber
+    counter: 0,
+    // For basketItems array
     basketItems: [],
     // For menuItems
     menuItems: [], // Put something inside if you want to test
@@ -142,7 +144,8 @@ export default new Vuex.Store({
     currentUser: state => state.currentUser,
     getMenuItems: state => state.menuItems,
     // We can now use the getters inside orders page
-    getOrderItems: state => state.orderItems
+    getOrderItems: state => state.orderItems,
+    // getCartItemCount: state => state.basketItems.length
   },
   modules: {}
 });

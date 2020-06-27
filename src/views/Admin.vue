@@ -1,100 +1,147 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-snackbar top block color="info" v-model="updatedSucces">
-      {{ updatedText }}
-      <v-btn color="white" text @click="updatedSucces = false">Close</v-btn>
-    </v-snackbar>
-
-    <v-row>
-      <v-col offset-md="0" md="7" class="ml-12">
-        <h1 class="pl-3">Products</h1>
-        <div class="text-right">
+  <div class="Team">
+    <v-container grid-list-xs fluid>
+      <v-layout row wrap>
+        <!--Update snackbar-->
+        <v-snackbar top block color="dark" v-model="updatedSucces" :timeout="5000">
+          {{ updatedText }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="updatedSucces = false">Close</v-btn>
+          </template>
+        </v-snackbar>
+        <!--Delete snackbar-->
+        <v-snackbar top v-model="snackbar" :timeout="5000">
+          {{ snackbarText }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+          </template>
+        </v-snackbar>
+        <!--<v-row>-->
+        <v-col offset-md="0" md="8" class="0">
+          <h1 class="pl-0">
+            Products
+            <span>
+              <v-btn flat small color="primary mt-3 float-right" to="/addNew">
+                <span style="color:#ffffff;">
+                  <v-icon small>mdi-plus</v-icon>
+                </span>
+                <span style="padding:0 0px; color:#ffffff;">Add Item</span>
+              </v-btn>
+            </span>
+          </h1>
+          <!-- <div class="text-right">
           <v-btn color="primary mt-1" small to="/addNew">
             <span style="color:#ffffff;">
               <v-icon small>mdi-plus</v-icon>
             </span>
             <span style="padding:0 2px; color:#ffffff;">Add Item</span>
           </v-btn>
-        </div>
-        <div class="pa-2 mt-2" id="info">
-          <v-simple-table id="menu-table">
-            <template v-slot:default>
-              <thead class="thead">
+          </div>-->
+          <div class="pa-2 mt-0" id="info">
+            <v-simple-table id="menu-table" class="responsive-table">
+              <template v-slot:default>
+                <thead class="thead">
+                  <tr>
+                    <th scope="cols">Product name</th>
+                    <th scope="cols">Price</th>
+                    <th scope="cols" style="width:10px;">Edit</th>
+                    <th scope="cols" style="width:50px;">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in menuItems" :key="item.name">
+                    <th scope="row">
+                      <span id="td_name">{{item.name}}</span>
+                      <br />
+                      <span id="menu_product_des">{{item.description}}</span>
+                    </th>
+                    <td class="font-weight-bold">
+                      {{item.price}}
+                      <span>DKK</span>
+                    </td>
+
+                    <td>
+                      <v-icon
+                        color="primary"
+                        @click.stop="dialog = true"
+                        @click="editItem(item)"
+                      >edit</v-icon>
+                    </td>
+                    <td>
+                      <v-icon color="error" @click="deleteItem(item.id)">mdi-trash-can-outline</v-icon>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+
+        <v-col offset-md="0" md="4">
+          <h1 class="pl-0">Preview</h1>
+          <div class="pl-3 py-3 mt-0" id="info">
+            <v-simple-table id="menu-table" class="responsive-table">
+              <thead>
                 <tr>
-                  <th class="text-left" style="width:200px;">Product name</th>
-                  <th class="text-left" style="width:50px;">Price</th>
-                  <th class="text-left" style="width:20px;">Edit</th>
-                  <th class="text-left" style="width:20px;">Remove</th>
+                  <th scope="col" style="width:70%">Name</th>
+                  <th scope="col" style="width:100px">Price</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in menuItems" :key="item.name">
-                  <td>
+                <tr>
+                  <td scope="row">
                     <span id="td_name">{{item.name}}</span>
                     <br />
                     <span id="menu_product_des">{{item.description}}</span>
                   </td>
-                  <td>{{item.price}}</td>
-                  <td>
-                    <v-icon color="primary" @click.stop="dialog = true" @click="editItem(item)">edit</v-icon>
-                  </td>
-                  <td>
-                    <v-icon color="error" @click="deleteItem(item.id)">delete</v-icon>
+                  <td class="font-weight-bold" id="preview_menuitem_price">
+                    {{item.price}}
+                    <span>DKK</span>
                   </td>
                 </tr>
               </tbody>
-            </template>
-          </v-simple-table>
-        </div>
-      </v-col>
-      <v-col offset-md="0" md="4">
-        <h1 class="pl-3">Preview</h1>
-        <div class="pl-3 py-3" id="info">Right</div>
-      </v-col>
-    </v-row>
-    <!--Dialog box for editing-->
-    <v-row>
-      <v-dialog v-model="dialog" max-width="500">
-        <v-card>
-          <!--<div class="text-right">
-                <v-btn color="orange" small to="/addNew">
-                <span style="color:#FFFFFF;"><v-icon>add</v-icon></span><span style="padding:0 5px; color:#FFFFFF;">Add Item</span>
-                </v-btn>
-          </div>-->
-          <div class="pl-4 pr-4 pt-3 mt-1 pb-2" id="info">
-            <h1 class="pl-3 primary--text">Edit item</h1>
-
-            <v-text-field v-model="item.name"></v-text-field>
-
-            <v-text-field v-model="item.description"></v-text-field>
-
-            <v-text-field v-model="item.price"></v-text-field>
-
-            <div class="text-right">
-              <v-btn small color="light" class="mb-3" @click.stop="dialog = false">
-                <span style="color:#000000;">
-                  <v-icon small>cancel</v-icon>
-                </span>
-                <span style="padding:0 5px; color:#000000;">Close</span>
-              </v-btn>
-              <v-btn
-                small
-                color="primary"
-                class="mb-3 ml-3"
-                @click="updateItem()"
-                @click.stop="dialog = false"
-              >
-                <span style="color:#FFFFFF;">
-                  <v-icon small>save_alt</v-icon>
-                </span>
-                <span style="padding:0 5px; color:#FFFFFF;">Save</span>
-              </v-btn>
-            </div>
+            </v-simple-table>
           </div>
-        </v-card>
-      </v-dialog>
-    </v-row>
-  </v-container>
+        </v-col>
+        <!--</v-row>-->
+        <!--Dialog box for editing-->
+        <v-row justify="center">
+          <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-card>
+              <v-card-title class="headline primary" primary-title>
+                <span class="headline white--text">Edit product</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field label=" " v-model="item.name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="item.description"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="item.price"></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions class="pb-5 pr-8">
+                <v-spacer></v-spacer>
+                <v-btn flat small color="light" @click.stop="dialog = false">Close</v-btn>
+                <v-btn
+                  small
+                  color="primary"
+                  @click="updateItem()"
+                  @click.stop="dialog = false"
+                >Save changes</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-row>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
 import { dbMenuAdd } from "../../firebase";
@@ -116,7 +163,10 @@ export default {
       activeEditItem: null,
       // UpdatedSuccess
       updatedSucces: false,
-      updatedText: "Menu Item has been updated successfully"
+      updatedText: "Item has been updated successfully",
+      // DeletedSuccess
+      snackbar: false,
+      snackbarText: "Item has been deleted"
     };
   },
   // To make our new way of grasping information by initialzing
@@ -155,7 +205,7 @@ export default {
         .update(this.item)
         .then(() => {
           this.updatedSucces = true;
-          console.log("Document successfully updated!");
+          //console.log("Document successfully updated!");
         })
         .catch(function(error) {
           // The document probably doesn't exist.
@@ -166,7 +216,8 @@ export default {
       dbMenuAdd
         .doc(id)
         .delete()
-        .then(function() {
+        .then(() => {
+          this.snackbar = true;
           //console.log("Document successfully deleted!");
         })
         .catch(function(error) {
@@ -222,7 +273,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 h1 {
-  @include infobox_mixin(1px, grey, 1px, 5px, white);
+  @include infobox_mixin(0px, grey, 0px, 0px, white);
   font-weight: bold;
   text-transform: uppercase;
   font-size: 16;
@@ -249,7 +300,7 @@ tr td {
   color: rgba(0, 0, 0, 0.6);
   font-size: 13px;
 }
-#menu-table :hover {
+/* #menu-table :hover {
   border-radius: 0.3rem;
-}
+} */
 </style>

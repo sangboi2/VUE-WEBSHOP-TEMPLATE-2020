@@ -1,67 +1,131 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col offset-md="0" md="7" class="ml-12">
-        <h1 class="pl-3">New product</h1>
-        <!--<div class="text-right">
+  <div class="Team">
+    <v-container grid-list-xs fluid>
+      <v-layout row wrap>
+        <v-snackbar top v-model="snackbar" :timeout="5000">
+          {{ snackbarText }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+          </template>
+        </v-snackbar>
+
+        <v-col offset-md="0" md="8" class="0">
+          <h1 class="pl-0">New product</h1>
+          <!--<div class="text-right">
          <v-btn color="orange" small to="/addNew">
            <span style="color:#FFFFFF;"><v-icon>add</v-icon></span><span style="padding:0 5px; color:#FFFFFF;">Add Item</span>
           </v-btn>
-        </div>-->
-        <div class="pl-4 pr-4 pt-3 mt-1 pb-2" id="info">
-          <v-text-field label="Product name" aria-required v-model="name" class></v-text-field>
+          </div>-->
+          <div class="pl-4 pr-4 pt-3 mt-1 pb-2" id="info">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <router-link class="close" to="/admin" close-icon="mdi-close">
+                <v-icon text>mdi-close</v-icon>
+              </router-link>
 
-          <v-text-field label="Description" aria-required v-model="description" class></v-text-field>
+              <!--<v-btn text small >
+                <span>
+                  <v-icon small text>mdi-close</v-icon>
+                </span>
+              </v-btn>-->
+            </v-card-actions>
+            <!--<v-btn small text class="close float-right" to="/admin">
+            <span>
+              <v-icon>mdi-close</v-icon>
+            </span>
+            </v-btn>-->
+            <v-col cols="12">
+              <v-text-field
+                label="Enter product name"
+                prepend-icon="folder"
+                :rules="inputRules"
+                aria-required
+                v-model="name"
+                class
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                label="Enter description"
+                prepend-icon="edit"
+                :rules="inputRules"
+                aria-required
+                v-model="description"
+                class
+              ></v-text-field>
+            </v-col>
 
-          <v-text-field label="Price" aria-required v-model="price" class></v-text-field>
-          <v-file-input label="Upload image" @change="uploadImage"></v-file-input>
-          <div class="text-right">
-            <v-btn small color="light" class="mb-3" to="/admin">
+            <v-col cols="12">
+              <v-text-field
+                label="Enter price"
+                prepend-icon="money"
+                :rules="inputRules"
+                aria-required
+                v-model="price"
+                class
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-file-input label="Upload image" @change="uploadImage"></v-file-input>
+            </v-col>
+
+            <v-card-actions class="pb-0">
+              <v-spacer></v-spacer>
+              <v-btn flat small outlined color="primary" class="mb-3" @click="clear">
+                <span style="color:#000000;">
+                  <v-icon small></v-icon>
+                </span>
+                <span>Clear</span>
+              </v-btn>
+              <!--  <v-btn small color="light" class="mb-3" to="/admin">
               <span style="color:#000000;">
-                <v-icon small>cancel</v-icon>
+                <v-icon small></v-icon>
               </span>
-              <span style="padding:0 5px; color:#000000;">Cancel</span>
-            </v-btn>
-            <v-btn
-              small
-              color="primary"
-              class="mb-3 ml-3"
-              @click="addNewMenuItem()"
-              :disabled="btnDisable"
-            >
-              <span>
-                <v-icon small>mdi-plus</v-icon>
-              </span>
-              <span style="padding:0 2px;">Add item</span>
-            </v-btn>
+              <span>Close</span>
+              </v-btn>-->
+
+              <v-btn
+                flat
+                small
+                color="primary"
+                class="mb-3 ml-3"
+                @click="addNewMenuItem()"
+                :disabled="btnDisable"
+              >
+                <span>
+                  <v-icon small>mdi-plus</v-icon>
+                </span>
+                <span>Add item</span>
+              </v-btn>
+            </v-card-actions>
           </div>
-        </div>
-      </v-col>
-      <v-col offset-md="0" md="4">
-        <h1 class="pl-3">Preview</h1>
-        <div class="pt-3 mt-0 pb-2" id="info">
-          <v-simple-table id="menu-table">
-            <thead>
-              <tr>
-                <th class="text-left" style="width:70%">Name</th>
-                <th class="text-left" style="width:100px">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <span id="td_name">{{name}}</span>
-                  <br />
-                  <span id="menu_product_des">{{description}}</span>
-                </td>
-                <td id="preview_menuitem_price">{{price}}</td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-col>
+        <v-col offset-md="0" md="4">
+          <h1 class="pl-0">Preview</h1>
+          <div class="pt-3 mt-0 pb-2" id="info">
+            <v-simple-table id="menu-table" class="responsive-table">
+              <thead>
+                <tr>
+                  <th scope="col" style="width:70%">Name</th>
+                  <th scope="col" style="width:100px">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">
+                    <span id="td_name">{{name}}</span>
+                    <br />
+                    <span id="menu_product_des">{{description}}</span>
+                  </td>
+                  <td id="preview_menuitem_price">{{price}}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+        </v-col>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
 import { dbMenuAdd, fb } from "../../../firebase";
@@ -75,7 +139,11 @@ export default {
       price: "",
       image: null,
       // Handle the button to click ready
-      btnDisable: true
+      btnDisable: true,
+      snackbar: false,
+      snackbarText: "Item has been added successfully",
+      //Form validation
+      inputRules: [v => v.length >= 2 || "Minimum length is 2 characters"]
     };
   },
   methods: {
@@ -108,19 +176,30 @@ export default {
       );
     },
     addNewMenuItem() {
-      dbMenuAdd.add({
-        name: this.name,
-        description: this.description,
-        price: this.price,
-        image: this.image
-      });
+      dbMenuAdd
+        .add({
+          name: this.name,
+          description: this.description,
+          price: this.price,
+          image: this.image
+        })
+        .then(() => {
+          this.snackbar = true;
+        });
+    },
+    // To clear form after submit
+    clear() {
+      this.name = "";
+      this.description = "";
+      this.price = "";
+      this.image = "";
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 h1 {
-  @include infobox_mixin(1px, grey, 1px, 5px, white);
+  @include infobox_mixin(0px, grey, 0px, 0px, white);
   font-weight: bold;
   text-transform: uppercase;
   font-size: 16;
@@ -147,4 +226,11 @@ tr td {
   color: rgba(0, 0, 0, 0.6);
   font-size: 13px;
 }
+.close {
+  text-decoration: none;
+}
 </style>
+
+
+
+

@@ -1,145 +1,159 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col offset-md="0" md="7" class="ml-12">
-        <h1 class="pl-3">Orders</h1>
-        <div class="pa-2" id="info">
-          <v-row class="0">
-            <v-col cols="12" md="1" class="pa-2">
-              <p class="font-weight-bold body-1 pl-3 darkgrey--text">INFO:</p>
-            </v-col>
-            <v-col cols="12" md="5" class="pa-2 pl-6">
-              <v-row align="center">
-                <div id="status_box" class="success">COMPLETED</div>
-                <span class="font-weight-light caption pl-1">DONE</span>
-              </v-row>
-              <v-row align="center">
-                <div id="status_box" class="warning">INPROGRESS</div>
-                <span class="font-weight-light caption pl-1">Somebody is working on it</span>
-              </v-row>
-              <v-row align="center">
-                <div id="status_box" class="red">INCOMPLETE</div>
-                <span class="font-weight-light caption pl-1">Not started</span>
-              </v-row>
-            </v-col>
-            <v-col cols="12" md="6" class="pa-2">
-              <v-row>
-                <div id="status_box" class="success mr-3">COMPLETED</div>
-                <div id="status_box" class="warning mr-3">INPROGRESS</div>
-                <div id="status_box" class="red">INCOMPLETE</div>
-              </v-row>
-              <v-row>
-                <p class="font-weight-light caption pl-1 pr-1">
-                  <b>Single-click</b> to switch stage: complete => in progress
-                  =>
-                  <b>Double-click</b> the box to reset to "not started"
-                </p>
-                <span class="font-weight-light caption pl-1">
-                  <v-icon color="grey">archive</v-icon>Archive to " hide" it from orders list
+  <div class="Team">
+    <v-container grid-list-xs fluid>
+      <v-layout row wrap>
+        <v-col offset-md="0" md="8" class="0">
+          <h1 class="pl-0">Orders</h1>
+          <div class="pa-2" id="info">
+            <v-row class="0">
+              <v-col cols="12" md="1" class="pa-2">
+                <p class="font-weight-bold body-1 pl-3 primary--text">INFO:</p>
+              </v-col>
+              <v-col cols="12" md="5" class="pa-2 pl-12">
+                <v-row align="center">
+                  <div id="status_box" class="red black--text">INCOMPLETE</div>
+                  <span class="font-weight-light caption pl-1">Not started</span>
+                </v-row>
+                <v-row align="center">
+                  <div id="status_box" class="warning black--text">INPROGRESS</div>
+                  <span class="font-weight-light caption pl-1">Somebody is working on it</span>
+                </v-row>
+                <v-row align="center">
+                  <div id="status_box" class="success black--text">COMPLETED</div>
+                  <span class="font-weight-light caption pl-1">Done</span>
+                </v-row>
+              </v-col>
+              <v-col cols="12" md="6" class="pa-2 pl-12">
+                <v-row>
+                  <div id="status_box" class="red mr-3 black--text">INCOMPLETE</div>
+                  <div id="status_box" class="warning mr-3 black--text">INPROGRESS</div>
+                  <div id="status_box" class="success black--text">COMPLETED</div>
+                </v-row>
+                <v-row>
+                  <p class="font-weight-light caption pl-1 pr-1">
+                    <b>Single-click</b> to switch stage:
+                    <br />complete =>
+                    in progress
+                    <br />
+                    <b>Double-click</b> the box to reset to:
+                    <b>"not started"</b>
+                  </p>
+                  <span class="font-weight-light caption">
+                    <v-icon color="grey">mdi-archive-outline</v-icon>Archive to
+                    <b>" hide"</b> it from orders list.
+                  </span>
+                </v-row>
+              </v-col>
+            </v-row>
+          </div>
+          <!--Orders list area-->
+          <div class="pa-2 mt-1" id="info">
+            <p class="font-weight-bold body-1 primary--text pl-3 text-capitalize">Order details:</p>
+            <v-simple-table id="menu-table" class="responsive-table">
+              <thead class="thead">
+                <tr>
+                  <th scope="cols" style="width:10%;">ON</th>
+                  <th scope="cols" style="width:10%;">QTY</th>
+                  <th scope="cols" style="width:40%;">Item</th>
+                  <th scope="cols" style="width:10%;">Price</th>
+                  <th scope="cols" style="width:10%;">Status</th>
+                  <th scope="cols" style="width:10%;">Archive</th>
+                  <th scope="cols" style="width:10%;">Remove</th>
+                </tr>
+              </thead>
+              <tbody class="font-weight-light">
+                <!-- Switching out menuItems to orderItems below-->
+                <!--<tr v-for="item in menuItems" :key="item.name">-->
+
+                <tr v-for="item in orderItems" :key="item.name">
+                  <td scope="row">{{ item.orderNumber }}</td>
+
+                  <td class="py-3">
+                    <p
+                      style="margin:0;"
+                      v-for="subitem in item.orderLines"
+                      :key="subitem.id"
+                    >{{ subitem.quantity }}</p>
+                  </td>
+                  <td class="py-3 font-weight-regular">
+                    <p
+                      style="margin:0;"
+                      v-for="subitem in item.orderLines"
+                      :key="subitem.id"
+                    >{{ subitem.name }}</p>
+                  </td>
+                  <td class="py-3">
+                    <p
+                      style="margin:0;"
+                      v-for="subitem in item.orderLines"
+                      :key="subitem.id"
+                    >{{ subitem.price }}</p>
+                  </td>
+
+                  <td>
+                    <div
+                      id="status_box"
+                      v-bind:class="item.status"
+                      @click="switchStage(item.id)"
+                      class="status_switch black--text text-uppercase"
+                    >{{ item.status }}</div>
+                  </td>
+                  <td>
+                    <v-icon color="darkgrey" @click="archiveOrderItem(item.id)">mdi-archive-outline</v-icon>
+                  </td>
+                  <td>
+                    <v-icon color="red" @click="deleteOrderItem(item.id)">mdi-trash-can-outline</v-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+        </v-col>
+        <!-- Right side revenue box-->
+        <v-col offset-md="0" md="4">
+          <h1 class="pr-0 pl-0">Revenue</h1>
+          <div class="pa-4" id="info">
+            <h2
+              class="font-weight-bold body-1 pb-2 primary--text orders_info"
+            >Completed Orders Information</h2>
+            <v-divider></v-divider>
+            <div>
+              <p class="pt-2 font-weight-bold" id="totalOrders">
+                Total orders:
+                <span
+                  class="black--text font-weight-bold float-right pr-2"
+                >{{ orderItems.length }}</span>
+              </p>
+            </div>
+
+            <div id="revenueList" v-for="item in orderItems" :key="item.name">
+              <p>
+                Ordernumber:
+                <span class>{{ item.orderNumber }}</span>
+                <!--<v-btn small text @click="deleteOrderItem(item.id)">-->
+                <span class="float-right">
+                  <v-icon text @click="deleteOrderItem(item.id)" color="red">mdi-trash-can-outline</v-icon>
                 </span>
-              </v-row>
-            </v-col>
-          </v-row>
-        </div>
-        <!--Orders list area-->
-        <div class="pa-2 mt-1" id="info">
-          <p class="font-weight-bold body-1 pa-3 darkgrey--text">ORDERS:</p>
-          <v-simple-table id="menu-table">
-            <thead class="thead">
-              <tr>
-                <th class="text-left" style="width:10%;">ON</th>
-                <th class="text-left" style="width:10%;">QTY</th>
-                <th class="text-left" style="width:40%;">Item</th>
-                <th class="text-left" style="width:10%;">Price</th>
-                <th class="text-left" style="width:10%;">Status</th>
-                <th class="text-left" style="width:10%;">Archive</th>
-                <th class="text-left" style="width:10%;">Remove</th>
-              </tr>
-            </thead>
-            <tbody class="font-weight-light">
-              <!-- Switching out menuItems to orderItems below-->
-              <!--<tr v-for="item in menuItems" :key="item.name">-->
-
-              <tr v-for="item in orderItems" :key="item.name">
-                <td>{{ item.orderNumber }}</td>
-
-                <td class="py-3">
-                  <p
-                    style="margin:0;"
-                    v-for="subitem in item.orderLines"
-                    :key="subitem.id"
-                  >{{ subitem.quantity }}</p>
-                </td>
-                <td class="py-3">
-                  <p
-                    style="margin:0;"
-                    v-for="subitem in item.orderLines"
-                    :key="subitem.id"
-                  >{{ subitem.name }}</p>
-                </td>
-                <td class="py-3">
-                  <p
-                    style="margin:0;"
-                    v-for="subitem in item.orderLines"
-                    :key="subitem.id"
-                  >{{ subitem.price }}</p>
-                </td>
-
-                <td>
-                  <div
-                    id="status_box"
-                    v-bind:class="item.status"
-                    @click="switchStage(item.id)"
-                  >{{ item.status }}</div>
-                </td>
-                <td>
-                  <v-icon color="darkgrey" @click="archiveOrderItem(item.id)">archive</v-icon>
-                </td>
-                <td>
-                  <v-icon color="red" @click="deleteOrderItem(item.id)">delete</v-icon>
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </div>
-      </v-col>
-      <!-- Right side revenue box-->
-      <v-col offset-md="0" md="4">
-        <h1 class="pr-3">Revenue</h1>
-        <div class="pa-2" id="info">
-          <p class="font-weight-bold body-1 darkgrey--text">Completed Orders:</p>
-          <div>
-            <p id="totalOrders">
-              Total orders:
-              <span class="error--text font-weight-bold">{{ orderItems.length }}</span>
-            </p>
+                <!--</v-btn>-->
+              </p>
+            </div>
           </div>
 
-          <div id="revenueList" v-for="item in orderItems" :key="item.name">
-            <p>
-              Ordernumber
-              {{ item.orderNumber }}
-              <v-btn small text @click="deleteOrderItem(item.id)">
-                <v-icon color="warning">delete</v-icon>
-              </v-btn>
-            </p>
+          <div class="pr-3 pl-4 mt-1" id="info">
+            <div id="totalRevenue">
+              <p id="totalRevenueText">
+                Total Revenue:
+                <span id="totalRevenueTextTotal">{{revenueTotal}} DKK</span>
+              </p>
+            </div>
           </div>
-        </div>
-
-        <div class="pa-2 mt-1" id="info">
-          <div id="totalRevenue">
-            <p id="totalRevenueText">
-              Total Revenue:
-              <span id="totalRevenueTextTotal">{{revenueTotal}}</span>
-            </p>
-          </div>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-col>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <script>
-// v-if="item-storeOrder == false" should be put line 63
+// v-if="item.storeOrder == false" should be put line 63
 // v-if="item.archive == true" should be put line 122
 // Disable after created function is disable using a better way store method like in admin page
 import { dbOrders } from "../../firebase";
@@ -180,20 +194,20 @@ export default {
     switchStage(id) {
       let selectedOrderItem = this.orderItems.filter(item => item.id === id)[0];
 
-      if (selectedOrderItem.status === "inprogess") {
+      if (selectedOrderItem.status === "warning") {
         dbOrders
           .doc(id)
-          .update({ status: "completed" })
+          .update({ status: "success" })
           .then(() => {});
-      } else if (selectedOrderItem.status === "incomplete") {
+      } else if (selectedOrderItem.status === "red") {
         dbOrders
           .doc(id)
-          .update({ status: "inprogess" })
+          .update({ status: "warning" })
           .then(() => {});
-      } else if (selectedOrderItem.status === "completed") {
+      } else if (selectedOrderItem.status === "success") {
         dbOrders
           .doc(id)
-          .update({ status: "incomplete" })
+          .update({ status: "red" })
           .then(() => {});
       }
     },
@@ -300,7 +314,11 @@ export default {
   border-radius: 2px;
   margin: 5px 0;
   color: white;
-  text-shadow: 1px 1px 1px #aaa;
+  text-shadow: none;
+  //text-shadow: 1px 1px 1px #aaa;
+}
+.status_switch {
+  cursor: pointer;
 }
 #menu-table {
   border-radius: 0.3rem;
@@ -308,6 +326,9 @@ export default {
 #totalRevenue {
   padding: 20px 10px 20px 0;
   display: flex;
+}
+.orders_info {
+  text-transform: uppercase;
 }
 #totalRevenueText {
   display: flex;

@@ -6,6 +6,7 @@ import Admin from '../views/Admin.vue'
 import Orders from '../views/Orders.vue'
 import AddNewItems from '../components/admin/AddNewItems.vue'
 import Login from '../components/admin/Login.vue'
+import Register from '../components/admin/Register.vue'
 
 // For navigation Guards and security!
 import firebase from 'firebase'
@@ -13,7 +14,7 @@ import 'firebase/firestore'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
@@ -54,7 +55,7 @@ Vue.use(VueRouter)
     path: '/addNew',
     name: 'AddNew',
     component: AddNewItems,
-     // Prevent people outside from seeing this. Restricted area using navigation quards
+    // Prevent people outside from seeing this. Restricted area using navigation quards
     meta: {
       requiresAuth: true
     }
@@ -65,10 +66,15 @@ Vue.use(VueRouter)
     component: Login
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '*',
     redirect: '/'
   },
-  
+
 ]
 
 const router = new VueRouter({
@@ -79,12 +85,12 @@ const router = new VueRouter({
 
 // Navigation Guards and security!
 
-router.beforeEach((to, from, next) =>{
+router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser;
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth); 
-  
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
   if (requiresAuth && !currentUser) next('login');
   else next();
-  });
+});
 
 export default router
