@@ -52,13 +52,13 @@
             <v-simple-table id="menu-table" class="responsive-table">
               <thead class="thead">
                 <tr>
-                  <th scope="cols" style="width:10%;">ON</th>
-                  <th scope="cols" style="width:10%;">QTY</th>
-                  <th scope="cols" style="width:40%;">Item</th>
-                  <th scope="cols" style="width:10%;">Price</th>
+                  <th scope="cols" style="width:5%;">ON</th>
+                  <th scope="cols" style="width:5%;">QTY</th>
+                  <th scope="cols" style="width:50%;">Item</th>
+                  <th scope="cols" style="width:25%;">Price</th>
                   <th scope="cols" style="width:10%;">Status</th>
-                  <th scope="cols" style="width:10%;">Archive</th>
-                  <th scope="cols" style="width:10%;">Remove</th>
+                  <th scope="cols" style="width:5%;">Archive</th>
+                  <th scope="cols" style="width:5%;">Remove</th>
                 </tr>
               </thead>
               <tbody class="font-weight-light">
@@ -82,12 +82,11 @@
                       :key="subitem.id"
                     >{{ subitem.name }}</p>
                   </td>
-                  <td class="py-3">
-                    <p
-                      style="margin:0;"
-                      v-for="subitem in item.orderLines"
-                      :key="subitem.id"
-                    >{{ subitem.price }}</p>
+                  <td class="py-3 font-weight-bold">
+                    <p style="margin:0;" v-for="subitem in item.orderLines" :key="subitem.id">
+                      {{ subitem.price }}
+                      <span>DKK</span>
+                    </p>
                   </td>
 
                   <td>

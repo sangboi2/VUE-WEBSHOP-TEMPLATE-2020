@@ -128,7 +128,7 @@
               </v-card-text>
               <v-card-actions class="pb-5 pr-8">
                 <v-spacer></v-spacer>
-                <v-btn flat small color="light" @click.stop="dialog = false">Close</v-btn>
+                <v-btn outlined flat small color="primary" @click.stop="dialog = false">Close</v-btn>
                 <v-btn
                   small
                   color="primary"
@@ -295,11 +295,17 @@ tr td {
   padding: 10px 10px 10px 16px;
 }
 #menu_product_des {
-  font-style: Thin;
+  font-style: thin;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
   font-size: 13px;
 }
+/* #preview_menuitem_price {
+  font-style: thin;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 13px;
+} */
 /* #menu-table :hover {
   border-radius: 0.3rem;
 } */

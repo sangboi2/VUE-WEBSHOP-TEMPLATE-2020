@@ -117,7 +117,10 @@
                     <br />
                     <span id="menu_product_des">{{description}}</span>
                   </td>
-                  <td id="preview_menuitem_price">{{price}}</td>
+                  <td id="preview_menuitem_price">
+                    {{price}}
+                    <span>DKK</span>
+                  </td>
                 </tr>
               </tbody>
             </v-simple-table>

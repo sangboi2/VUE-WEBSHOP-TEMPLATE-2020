@@ -3,16 +3,16 @@
     <v-container grid-list-xs fluid>
       <v-layout row wrap>
         <v-col offset-md="0" md="8" class="ma-0">
-          <h3 class="pl-0 black--text text-capitalize">Products</h3>
+          <h3 class="pl-0 black--text text-capitalize">Your shopping cart</h3>
           <div class="pa-2" id="info">
             <v-simple-table id="menu-table">
               <template v-slot:default>
                 <thead class="thead">
                   <tr>
-                    <th scope="cols" style="width:150px;">Image</th>
-                    <th scope="cols" style="width:400px;">Product</th>
+                    <th scope="cols" style="width:20%;"></th>
+                    <th scope="cols" style="width:50%;"></th>
+                    <th scope="cols" style="width:15%;">Quantity</th>
                     <th scope="cols" style="width:15%;">Price</th>
-                    <th scope="cols" style="width:50px;">Add to Cart</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -25,20 +25,18 @@
                       <br />
                       <span id="menu_product_des">{{item.description}}</span>
                     </td>
+
+                    <td scope="row">
+                      <v-icon color="primary" @click="decreaseQtn(item)">mdi-minus-box</v-icon>
+                      {{item.quantity}}
+                      <v-icon color="primary" @click="increaseQtn(item)">mdi-plus-box</v-icon>
+                    </td>
                     <td class="font-weight-bold">
                       <!-- <span>
                         <v-icon small flat text class="currency black--text">mdi-currency-usd</v-icon>
                       </span>-->
                       {{item.price}}
                       <span>DKK</span>
-                    </td>
-                    <td>
-                      <v-btn flat small color="primary" class="ma-0" @click="addToBasket(item)">
-                        <span>
-                          <v-icon small color="light" class="mr-1">mdi-cart-arrow-down</v-icon>
-                        </span>
-                        <span>Add to cart</span>
-                      </v-btn>
                     </td>
                   </tr>
                 </tbody>
@@ -52,7 +50,7 @@
             <span class="float-right mr-6">({{cartCount}})</span>
           </h3>
           <div class="pa-2" id="info">
-            <v-simple-table class="responsive-table" id="product-table" v-if="basket.length > 0">
+            <v-simple-table id="product-table" v-if="basket.length > 0" class="responsive-table">
               <template v-slot:default>
                 <thead class="thead">
                   <tr>
@@ -73,6 +71,12 @@
                       {{item.price}}
                       <span>DKK</span>
                     </td>
+                    <v-col class="text-right">
+                      <p class="font-weight-light">
+                        {{subTotal}}
+                        <span>DKK</span>
+                      </p>
+                    </v-col>
                   </tr>
                 </tbody>
               </template>
@@ -141,8 +145,9 @@
   </div>
 </template>
 <script>
+// import { Menu } from "../..views/Menu.vue";
 // Disable after created function is disable using a better way store method like in admin page
-// import { dbMenuAdd } from '../../firebase'
+//import { dbMenuAdd } from "../../firebase";
 export default {
   data() {
     return {

@@ -2,18 +2,25 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <h1 class="text-center">Administrator</h1>
+        <h1 class="text-center text-capitalize">
+          Log in
+          <v-icon class="account_icon" color="white" x-large></v-icon>
+        </h1>
+
         <div id="info">
           <v-text-field
+            filled
             v-model="email"
             type="text"
             outlined
             label="Enter e-mail or username"
             prepend-inner-icon="person"
             required
+            :rules="inputRules"
           ></v-text-field>
 
           <v-text-field
+            filled
             v-model="password"
             type="password"
             name="password"
@@ -23,7 +30,9 @@
             prepend-inner-icon="lock"
             required
           ></v-text-field>
-          <v-btn class="float-right" flat small color="primary" @click.prevent="signIn()">Log in</v-btn>
+
+          <v-btn block small flat color="primary" @click.prevent="signIn()" dark>Continue</v-btn>
+
           <v-spacer></v-spacer>
 
           <!-- <v-btn class flat small color="light" @click.prevent="signOut()">Sign out</v-btn> -->
@@ -66,7 +75,9 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      //Form validation
+      inputRules: [v => v.length >= 1 || "Your e-mail or password is incorrect"]
     };
   },
   methods: {

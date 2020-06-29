@@ -2,7 +2,10 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <h1 class="text-center">Register</h1>
+        <h1 class="text-center">
+          Create account
+          <v-icon class="account_icon" color="white" x-large></v-icon>
+        </h1>
         <div id="info">
           <v-text-field
             v-model="email"
@@ -11,6 +14,7 @@
             label="Enter e-mail or username"
             prepend-inner-icon="person"
             required
+            :rules="inputRules"
           ></v-text-field>
 
           <v-text-field
@@ -23,7 +27,7 @@
             prepend-inner-icon="lock"
             required
           ></v-text-field>
-          <v-btn class="float-right" flat small color="primary" @click.prevent="register()">
+          <v-btn block flat small color="primary" @click.prevent="register()">
             <v-icon small>mdi-plus</v-icon>Register
           </v-btn>
         </div>
@@ -41,6 +45,8 @@ export default {
     return {
       email: "",
       password: ""
+      //Form validation
+      //inputRules: [v => v.length >= 1 || "Enter valid characters"]
     };
   },
   methods: {

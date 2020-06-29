@@ -161,7 +161,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
+    basketDump: []
   }),
   methods: {
     signOut() {

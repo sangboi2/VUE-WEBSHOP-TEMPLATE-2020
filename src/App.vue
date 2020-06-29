@@ -40,7 +40,6 @@ main {
 h1 {
   @include infobox_mixin(0px, grey, 0px, 0px, white);
   font-weight: bold;
-  text-transform: uppercase;
   font-size: 16;
   text-align: left;
 }
